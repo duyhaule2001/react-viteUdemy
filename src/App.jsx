@@ -10,10 +10,15 @@ const App = () => {
     address: "vinhphuc",
     country: "vietnam",
   };
+
+  const addNewToDo = (name) => {
+    alert(`call me ${name}`);
+  };
+
   return (
     <div className="todo-container">
       <h1 className="todo-title">ToDo List</h1>
-      <TodoNew />
+      <TodoNew addNewToDo={addNewToDo} />
       <TodoData name={hoidanit} age={age} data={data} />
       <div className="todo-image">
         <img className="logo" src={reactLogo} />
