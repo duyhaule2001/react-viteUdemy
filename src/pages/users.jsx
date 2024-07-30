@@ -7,18 +7,18 @@ const UserPage = () => {
   const [dataUser, setDataUser] = useState([]);
 
   useEffect(() => {
-    loadUSer();
+    loadUser();
   }, []);
 
-  const loadUSer = async () => {
+  const loadUser = async () => {
     const res = await fetchAllUserAPI();
     setDataUser(res.data);
   };
 
   return (
     <div style={{ padding: "20px" }}>
-      <UserForm loadUSer={loadUSer} />
-      <UserTable dataUser={dataUser} />
+      <UserForm loadUser={loadUser} />
+      <UserTable dataUser={dataUser} loadUser={loadUser} />
     </div>
   );
 };
