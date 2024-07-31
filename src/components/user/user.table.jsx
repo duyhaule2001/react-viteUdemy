@@ -1,7 +1,9 @@
-import { Table } from "antd";
+import { Table, Popconfirm, notification } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import UpdateUserModal from "./update.user.modal";
 import { useState } from "react";
+import ViewUserDetail from "./view.user.detail";
+import { deleteUserAPI } from "../../services/api.service";
 
 const UserTable = (props) => {
   const { dataUser, loadUser } = props;
@@ -9,12 +11,25 @@ const UserTable = (props) => {
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [dataUpdate, setDataUpdate] = useState(null);
 
+  const [dataDetail, setDataDetail] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
   const columns = [
     {
       title: "Id",
       dataIndex: "_id",
       render: (_, record) => {
-        return <a href="#">{record._id}</a>;
+        return (
+          <a
+            onClick={() => {
+              setIsDetailOpen(true);
+              setDataDetail(record);
+            }}
+            href="#"
+          >
+            {record._id}
+          </a>
+        );
       },
     },
     {
@@ -37,12 +52,36 @@ const UserTable = (props) => {
             }}
             style={{ color: "orange" }}
           />
-          <DeleteOutlined style={{ color: "red" }} />
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure to delete this task?"
+            onConfirm={() => handleDeleteUser(record._id)}
+            okText="Yes"
+            cancelText="No"
+            placement="left"
+          >
+            <DeleteOutlined style={{ color: "red" }} />
+          </Popconfirm>
         </div>
       ),
     },
   ];
 
+  const handleDeleteUser = async (id) => {
+    const res = await deleteUserAPI(id);
+    if (res.data) {
+      notification.success({
+        message: "Xoá User",
+        description: "Xoá user thành công",
+      });
+      await loadUser();
+    } else {
+      notification.error({
+        message: "Error create user",
+        description: JSON.stringify(res.message),
+      });
+    }
+  };
   return (
     <>
       <Table columns={columns} dataSource={dataUser} rowKey={"_id"} />
@@ -52,6 +91,12 @@ const UserTable = (props) => {
         dataUpdate={dataUpdate}
         setDataUpdate={setDataUpdate}
         loadUser={loadUser}
+      />
+      <ViewUserDetail
+        dataDetail={dataDetail}
+        isDetailOpen={isDetailOpen}
+        setDataDetail={setDataDetail}
+        setIsDetailOpen={setIsDetailOpen}
       />
     </>
   );
