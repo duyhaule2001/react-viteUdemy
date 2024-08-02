@@ -43,7 +43,6 @@ const LoginPage = () => {
         layout="vertical"
         onFinish={onFinish}
         style={{ margin: "50px" }}
-        // onFinishFailed={onFinishFailed}
       >
         <Row justify={"center"}>
           <Col xs={24} md={8}>
