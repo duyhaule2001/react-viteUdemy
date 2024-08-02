@@ -1,10 +1,33 @@
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, notification } from "antd";
+import { useNavigate } from "react-router-dom";
+import { registerUserAPI } from "../services/api.service";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
-
-  const onFinish = ( values) => {
+  const navigate = useNavigate();
+  const onFinish = async ( values) => {
     console.log(values)
+
+    const res = await registerUserAPI(
+      values.fullName, 
+      values.email, 
+      values.password, 
+      values.phone)
+    
+    if(res.data){
+      notification.success({
+        message:"Register User",
+        description:"Đăng kí tài khoản thành công"
+      })
+      navigate("/login")
+    }else{
+      notification.error({
+        message:"Register User Error",
+        description:JSON.stringify(res.message)
+      })
+    }
+    
+
   }
   return (
     <Form
@@ -17,54 +40,61 @@ const RegisterPage = () => {
       margin: "50px",
     }}>
       <Form.Item
-        label="FullName"
+        label="Full Name"
         name="fullName"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: 'Please input your username!',
-        //   },
-        // ]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input your Full Name!',
+          },
+        ]}
       >
         <Input />
       </Form.Item>
       <Form.Item
         label="Email"
         name="email"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: 'Please input your username!',
-        //   },
-        // ]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input your Email!',
+          },
+        ]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="PassWord"
-        name="passWord"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: 'Please input your username!',
-        //   },
-        // ]}
+        label="Pass Word"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your PassWord!',
+          },
+        ]}
       >
         <Input.Password />
       </Form.Item>
       <Form.Item
         label="Phone Number"
         name="phone"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: 'Please input your username!',
-        //   },
-        // ]}
+        rules={[
+          {
+            required: true,
+            pattern: new RegExp(/\d+/g),
+            message: "Please input number"
+          },
+        ]}
       >
         <Input />
       </Form.Item>
       <Button onClick={() => form.submit()} type="primary">Đăng kí</Button>
+      {/* <Button onClick={() => {
+        form.setFieldsValue({
+          email: "leduyhau@gmail.com",
+          fullName: "LE DUY HAU"
+        })
+      }}>Test</Button> */}
     </div>
       
       </Form>
