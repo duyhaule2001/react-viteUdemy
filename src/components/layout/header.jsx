@@ -1,6 +1,11 @@
-import React from "react";
+import React, { Children } from "react";
 import { Link } from "react-router-dom";
-import { HomeOutlined, UserAddOutlined, BookOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  UserAddOutlined,
+  BookOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import { useState } from "react";
 
@@ -27,6 +32,21 @@ const Header = () => {
       label: <Link to="/books">Book</Link>,
       key: "books  ",
       icon: <BookOutlined />,
+    },
+    {
+      label: "Cài đặt",
+      key: "settings",
+      icon: <SettingOutlined />,
+      children: [
+        {
+          label: <Link to={"/login"}>Đăng nhập</Link>,
+          key: "login",
+        },
+        {
+          label: "Đăng xuất",
+          key: "logout",
+        },
+      ],
     },
   ];
   return (
