@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React, { Children, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   HomeOutlined,
@@ -8,9 +8,15 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useState } from "react";
+import { AuthContext } from "../context/auth.context";
 
 const Header = () => {
   const [current, setCurrent] = useState("mail");
+
+  const { user } = useContext(AuthContext);
+
+  console.log("check", user);
+
   const onClick = (e) => {
     console.log("click ", e);
     setCurrent(e.key);
